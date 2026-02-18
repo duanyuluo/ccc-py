@@ -14,26 +14,28 @@ in_params = ccc.load_std_input_file("ccc13s3_2.log", ccc.tc_int)
 fav_team_id = in_params[0][0]
 finish_game_cnt = in_params[1][0]
 
-score_board = [[] for i in range(4)]
+score_board = [[] for _ in range(4)]
+
 
 def calc_score(team_me, team_other):
-    if (team_me == team_other):
+    if team_me == team_other:
         return 1
     else:
         return team_me > team_other and 3 or 0
 
-for i in range(2, finish_game_cnt+2):
+
+for i in range(2, finish_game_cnt + 2):
     team_l, team_r = in_params[i][0], in_params[i][1]
     result_l, result_r = in_params[i][2], in_params[i][3]
-    score_board[team_l-1].append(calc_score(result_l, result_r))
-    score_board[team_r-1].append(calc_score(result_r, result_l))
+    score_board[team_l - 1].append(calc_score(result_l, result_r))
+    score_board[team_r - 1].append(calc_score(result_r, result_l))
 
 cur_score_sum = [sum(n) for n in score_board]
 cur_best_score = max(cur_score_sum)
 cur_best_team = cur_score_sum.index(cur_best_score) + 1
-cur_fav_score = cur_score_sum[fav_team_id-1]
+cur_fav_score = cur_score_sum[fav_team_id - 1]
 
-fav_team_todo_games = 3 - len(score_board[fav_team_id-1])
+fav_team_todo_games = 3 - len(score_board[fav_team_id - 1])
 fav_max_todo_score = fav_team_todo_games * 3
 
 fav_max_total_score = cur_fav_score + fav_max_todo_score
